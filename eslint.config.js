@@ -83,7 +83,7 @@ export default defineConfig([
         "error",
         { disallowTypeAnnotations: false, fixStyle: "inline-type-imports" }
       ],
-      "@typescript-eslint/perfer-literal-enum-member": [
+      "@typescript-eslint/prefer-literal-enum-member": [
         "error",
         { allowBitwiseExpressions: true }
       ],
