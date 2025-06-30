@@ -1,11 +1,25 @@
+import type { PluginOption } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import { codeInspectorPlugin } from "code-inspector-plugin";
+import removeNoMatch from "vite-plugin-router-warn";
+import { vitePluginFakeServer } from "vite-plugin-fake-server";
+import svgLoader from "vite-svg-loader";
+import Icons from "unplugin-icons/vite";
+import removeConsole from "vite-plugin-remove-console";
+import { visualizer } from "rollup-plugin-visualizer";
 
+import { viteBuildInfo } from "./info";
+import { cdn } from "./cdn";
 import { pathResolve } from "./utils";
-export function getPluginsList() {
+import { configCompressPlugin } from "./compress";
+export function getPluginsList(
+  VITE_CDN: boolean,
+  VITE_COMPRESSION: ViteCompression
+): PluginOption[] {
+  const lifecycle = process.env.npm_lifecycle_event;
   return [
     tailwindcss(),
     vue({
@@ -29,6 +43,34 @@ export function getPluginsList() {
     codeInspectorPlugin({
       bundler: "vite",
       hideConsole: true
-    })
+    }),
+    viteBuildInfo(),
+    /**
+     * 开发环境下移除非必要的 vue-router 动态路由警告 No match found for location with path
+     * vite-plugin-router-match 只在开发环境中启用，只处理 vue-router 文件并且只在服务启动或重启时运行一次，性能消耗可忽略不计
+     * */
+    removeNoMatch(),
+    // mock 支持
+    vitePluginFakeServer({
+      logger: false,
+      include: "mock",
+      infixName: false,
+      enableProd: true
+    }),
+    // svg 组件化支持
+    svgLoader(),
+    // 自动按需加载图标
+    Icons({
+      compiler: "vue3",
+      scale: 1
+    }),
+    VITE_CDN ? cdn : null,
+    configCompressPlugin(VITE_COMPRESSION),
+    // 线上环境删除 console
+    removeConsole({ external: ["src/assets/iconfont/iconfont.js"] }),
+    // 打包分析
+    lifecycle === "report"
+      ? visualizer({ open: true, brotliSize: true, filename: "report.html" })
+      : (null as any)
   ];
 }

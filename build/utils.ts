@@ -1,5 +1,16 @@
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { readdir, stat } from "node:fs";
+import { sum, formatBytes } from "@pureadmin/utils";
+import dayjs from "dayjs";
+
+import {
+  name,
+  version,
+  dependencies,
+  devDependencies,
+  engines
+} from "../package.json";
 
 // 启动‘node’进程时所在工作目录的绝对路径
 const root: string = process.cwd();
@@ -16,7 +27,6 @@ const pathResolve = (dir = ".", metaUrl = import.meta.url) => {
   const buildDir = resolve(currentFileDir, "build");
   // 解析的绝对路径
   const resolvedPath = resolve(currentFileDir, dir);
-  console.log(resolvedPath);
   // 检查解析的绝对路径是否在 build 目录内
   if (resolvedPath.startsWith(buildDir)) {
     // 在 build 目录内，返回当前文件路径
@@ -29,6 +39,12 @@ const pathResolve = (dir = ".", metaUrl = import.meta.url) => {
 const alias: Record<string, string> = {
   "@": pathResolve("../src"),
   "@build": pathResolve()
+};
+
+// 平台的名称、版本、运行所需要的 node 和 pnpm 版本、依赖、最后构建时间的类型提示
+const __APP_INFO__ = {
+  pkg: { name, version, engines, dependencies, devDependencies },
+  lastBuildTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss")
 };
 // 处理环境变量
 const wrapperEnv = (envConf: Recordable): ViteEnv => {
@@ -60,4 +76,34 @@ const wrapperEnv = (envConf: Recordable): ViteEnv => {
   return ret;
 };
 
-export { root, pathResolve, alias, wrapperEnv };
+const fileListTotal: number[] = [];
+// 获取指定文件夹中所有文件的大小
+const getPackageSize = options => {
+  const { folder = "dist", callback, format = true } = options;
+  readdir(folder, (err, files: string[]) => {
+    if (err) throw err;
+    let count = 0;
+
+    const checkEnd = () => {
+      ++count === files.length &&
+        callback(format ? formatBytes(sum(fileListTotal)) : sum(fileListTotal));
+    };
+
+    files.forEach((item: string) => {
+      stat(`${folder}/${item}`, async (err, stats) => {
+        if (err) throw err;
+        if (stats.isFile()) {
+          fileListTotal.push(stats.size);
+          checkEnd();
+        } else if (stats.isDirectory()) {
+          getPackageSize({
+            folder: `${folder}/${item}`,
+            callback: checkEnd
+          });
+        }
+      });
+    });
+  });
+};
+
+export { root, pathResolve, alias, __APP_INFO__, wrapperEnv, getPackageSize };

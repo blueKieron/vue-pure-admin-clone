@@ -21,7 +21,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.1",
+    "vue-i18n": "^11.1.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -49,6 +51,49 @@
     "lint-staged": "^15.5.2",
     "@tailwindcss/vite": "^4.1.8",
     "@intlify/unplugin-vue-i18n": "^6.0.8",
-    "code-inspector-plugin": "^0.20.12"
+    "code-inspector-plugin": "^0.20.12",
+    "boxen": "^8.0.1",
+    "gradient-string": "^3.0.0",
+    "dayjs": "^1.11.13",
+    "@pureadmin/utils": "^2.6.1",
+    "vite-plugin-router-warn": "^1.0.0",
+    "vite-plugin-fake-server": "^2.2.0",
+    "vite-svg-loader": "^5.1.0",
+    "unplugin-icons": "^22.1.0",
+    "vite-plugin-cdn-import": "^1.0.1",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-remove-console": "^2.2.0",
+    "rollup-plugin-visualizer": "^5.14.0"
+  },
+  "engines": {
+    "node": "^18.18.0 || ^20.9.0 || >=22.0.0",
+    "pnpm": ">=9"
+  },
+  "pnpm": {
+    "allowedDeprecatedVersions": {
+      "are-we-there-yet": "*",
+      "sourcemap-codec": "*",
+      "lodash.isequal": "*",
+      "domexception": "*",
+      "w3c-hr-time": "*",
+      "inflight": "*",
+      "npmlog": "*",
+      "rimraf": "*",
+      "stable": "*",
+      "gauge": "*",
+      "abab": "*",
+      "glob": "*"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "core-js",
+      "es5-ext",
+      "esbuild",
+      "typeit",
+      "vue-demi"
+    ],
+    "ignoredBuiltDependencies": [
+      "@tailwindcss/oxide"
+    ]
   }
 }
