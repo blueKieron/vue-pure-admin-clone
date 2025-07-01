@@ -1,0 +1,44 @@
+.el-form-item__label {
+  font-weight: 700;
+}
+
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-dropdown-menu {
+  padding: 0 !important;
+}
+
+.is-dark {
+  z-index: 9999 !important;
+}
+
+// 重置 el-button 中的 icon 的 margin
+.reset-margin [class*="el-icon"] + span {
+  margin-left: 2px !important;
+}
+
+// 自定义 popover 的类名
+.pure-popper {
+  padding: 0 !important;
+}
+
+// nprogress 适配 element-plus 的主题色
+#nprogress {
+  & .bar {
+    background-color: var(--el-color-primary) !important;
+  }
+
+  & .peg {
+    box-shadow:
+      0 0 10px var(--el-color-primary),
+      0 0 5px var(--el-color-primary) !important;
+  }
+
+  & .spinner-icon {
+    border-top-color: var(--el-color-primary);
+    border-left-color: var(--el-color-primary);
+  }
+}
