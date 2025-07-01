@@ -1,7 +1,6 @@
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { readdir, stat } from "node:fs";
-import { sum, formatBytes } from "@pureadmin/utils";
 import dayjs from "dayjs";
 
 import {
@@ -74,6 +73,16 @@ const wrapperEnv = (envConf: Recordable): ViteEnv => {
   }
 
   return ret;
+};
+
+const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
+
+const formatBytes = (bytes: number) => {
+  if (bytes === 0) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${(bytes / Math.pow(k, i)).toPrecision(3)} ${sizes[i]}`;
 };
 
 const fileListTotal: number[] = [];
