@@ -14,7 +14,6 @@ import { include, exclude } from "./build/optimize";
 export default ({ mode }: ConfigEnv): UserConfigExport => {
   const { VITE_CDN, VITE_PORT, VITE_COMPRESSION, VITE_PUBLIC_PATH } =
     wrapperEnv(loadEnv(mode, root));
-  console.log(VITE_CDN);
   return {
     base: VITE_PUBLIC_PATH,
     root,
