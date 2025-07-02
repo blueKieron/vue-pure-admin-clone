@@ -65,7 +65,7 @@ declare global {
     ShowModel?: string;
     MenuArrowIconNoTransition?: boolean;
     CachingAsyncRoutes?: boolean;
-    TooltipEffect?: string;
+    TooltipEffect?: Effect;
     ResponsiveStorageNameSpace?: string;
     MenuSearchHistory?: number;
     MapConfigure?: {
