@@ -1,5 +1,6 @@
 import App from "./App.vue";
 import router from "./router";
+import { setupStore } from "@/store";
 import { getPlatformConfig } from "./config";
 import { createApp, type Directive } from "vue";
 
@@ -32,4 +33,7 @@ import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
 app.use(VueTippy);
 
-getPlatformConfig(app);
+getPlatformConfig(app).then(async () => {
+  setupStore(app);
+  app.use(router);
+});

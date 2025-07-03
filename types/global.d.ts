@@ -77,4 +77,16 @@ declare global {
       };
     };
   }
+
+  // 扩展 Element
+  interface Element {
+    // v-ripple 作用于 src/directives/ripple/index.ts
+    _ripple?: {
+      enabled?: boolean;
+      centered?: boolean;
+      class?: string;
+      circle?: boolean;
+      touched?: boolean;
+    };
+  }
 }
