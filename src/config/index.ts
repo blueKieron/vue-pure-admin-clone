@@ -1,8 +1,10 @@
 import axios from "axios";
 import type { App } from "vue";
 
+import type { RouteConfigs } from "@/layout/types";
+
 let config: object = {};
-const { VITE_PUBLIC_PATH } = import.meta.env;
+const { VITE_PUBLIC_PATH, VITE_HIDE_HOME } = import.meta.env;
 
 const setConfig = (cfg?: unknown) => {
   config = Object.assign(config, cfg);
@@ -23,6 +25,7 @@ const getConfig = (key?: string): PlatformConfigs => {
       return data;
     }
   }
+  console.log(config);
   return config;
 };
 
@@ -49,3 +52,20 @@ export const getPlatformConfig = async (app: App): Promise<undefined> => {
       throw "请在 ublic 件夹下添加 platform-config.json 配置文件";
     });
 };
+// 本地响应式存储的命名空间
+const responsiveStorageNameSpace = () => getConfig().ResponsiveStorageNameSpace;
+
+export { getConfig, setConfig, responsiveStorageNameSpace };
+
+export const routerArrays: Array<RouteConfigs> =
+  VITE_HIDE_HOME === "false"
+    ? [
+        {
+          path: "/welcome",
+          meta: {
+            title: "menus.pureHome",
+            icon: "ep/home-filled"
+          }
+        }
+      ]
+    : [];

@@ -78,6 +78,40 @@ declare global {
     };
   }
 
+  // 与 PlatformConfigs 类型不同，这里是缓存到浏览器本地存储的类型声明
+  interface StorageConfigs {
+    version?: string;
+    title?: string;
+    fixedHeader?: boolean;
+    hiddenSidebar?: boolean;
+    multiTagsCache?: boolean;
+    keepAlive?: boolean;
+    locale?: string;
+    layout?: string;
+    theme?: string;
+    darkMode?: boolean;
+    grey?: boolean;
+    weak?: boolean;
+    hideTabs?: boolean;
+    hideFooter?: boolean;
+    sidebarStatus?: boolean;
+    epThemeColor?: string;
+    themeColor?: string;
+    overallStyle?: string;
+    showLogo?: boolean;
+    showModel?: string;
+    menuSearchHistory?: number;
+    mapConfigure?: {
+      amapKey?: string;
+      options: {
+        resizeEnable?: boolean;
+        center?: number[];
+        zoom?: number;
+      };
+    };
+    username?: string;
+  }
+
   // 扩展 Element
   interface Element {
     // v-ripple 作用于 src/directives/ripple/index.ts

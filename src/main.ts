@@ -1,7 +1,12 @@
 import App from "./App.vue";
+// eslint-disable-next-line
 import router from "./router";
 import { setupStore } from "@/store";
 import { getPlatformConfig } from "./config";
+import { injectResponsiveStorage } from "@/utils/responsive";
+import { MotionPlugin } from "@vueuse/motion";
+import { useI18n } from "@/plugins/i18n";
+
 import { createApp, type Directive } from "vue";
 
 // 引入重置样式
@@ -33,7 +38,10 @@ import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
 app.use(VueTippy);
 
-getPlatformConfig(app).then(async () => {
+getPlatformConfig(app).then(async config => {
   setupStore(app);
-  app.use(router);
+  // app.use(router);
+  // await router.isReady();
+  injectResponsiveStorage(app, config);
+  app.use(MotionPlugin).use(useI18n);
 });
